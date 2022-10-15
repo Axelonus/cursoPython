@@ -43,6 +43,104 @@ def verifyNReturn(wordlist,userTry,guessList):
             
 
 
+def drawHangman(score):
+    rope = []
+    ropeNoKnot = [
+        chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9559)+"\n",
+        "        "+chr(9122)+"\n",
+        "        "+chr(9122)+"\n"
+    ]
+    head = []
+    lilWorriedHead = []
+    worriedHead = []
+    veryWorriedHead = []
+    deadHead = []
+    torso = []
+    torsoLeftArm = []
+    torsoBothArm = [
+        "        "+chr(9617)+"\n",
+        "     "+chr(11516)+chr(9617)+chr(9617)+chr(9617)+chr(9617)+chr(9617)+chr(11513)+"\n",
+        "    "+chr(11516)+"  "+chr(9617)+chr(9617)+chr(9617)+"  "+chr(11513)+"\n",
+        "   "+chr(11516)+"   "+chr(9617)+chr(9617)+chr(9617)+"   "+chr(11513)+"\n",
+        "   "+chr(5208)+"   "+chr(9617)+chr(9617)+chr(9617)+"   "+chr(5207)+"\n"
+    ]
+    leftPaw = []
+    bothPaw = []
+    if score >=6:
+        rope = [
+            chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9552)+chr(9559)+"\n",
+            "        "+chr(9122)+"\n",
+            "        "+chr(9122)+"\n",
+            "       "+chr(9581)+chr(9524)+chr(9582)+"\n",
+            "       "+chr(9584)+"-"+chr(9583)+"\n"
+        ]
+        print("".join(rope))
+    elif score == 5:
+        head = [
+            "      ₩₩₩₩₦ "+"\n",
+            "    （＾▽＾）"+"\n"
+        ]
+        print("".join(ropeNoKnot)+"".join(head))
+    elif score == 4:
+        lilWorriedHead = [
+            "      ₩₩₩₩₦ "+"\n",
+            "     (ㆆ_ㆆ)"+"\n"
+        ]
+        torso = [
+            "        "+chr(9617)+"\n",
+            "      "+chr(9617)+chr(9617)+chr(9617)+chr(9617)+chr(9617)+"\n",
+            "       "+chr(9617)+chr(9617)+chr(9617)+"\n",
+            "       "+chr(9617)+chr(9617)+chr(9617)+"\n",
+            "       "+chr(9617)+chr(9617)+chr(9617)+"\n"
+        ]
+        print("".join(ropeNoKnot)+"".join(lilWorriedHead)+"".join(torso))
+    elif score == 3:
+        worriedHead = [
+            "      ₩₩₩₩₦ "+"\n",
+            "     (▔﹏▔)"+"\n"
+        ]
+        torsoLeftArm = [
+            "        "+chr(9617)+"\n",
+            "     "+chr(11516)+chr(9617)+chr(9617)+chr(9617)+chr(9617)+chr(9617)+"\n",
+            "    "+chr(11516)+"  "+chr(9617)+chr(9617)+chr(9617)+"\n",
+            "   "+chr(11516)+"   "+chr(9617)+chr(9617)+chr(9617)+"\n",
+            "   "+chr(5208)+"   "+chr(9617)+chr(9617)+chr(9617)+"\n"
+        ]
+        print("".join(ropeNoKnot)+"".join(worriedHead)+"".join(torsoLeftArm))
+    elif score == 2:
+        worriedHead = [
+            "      ₩₩₩₩₦ "+"\n",
+            "     (▔﹏▔)"+"\n"
+        ]
+        print("".join(ropeNoKnot)+"".join(worriedHead)+"".join(torsoBothArm))
+    elif score == 1:
+        veryWorriedHead = [
+            "      ₩₩₩₩₦ "+"\n",
+            "     (≧口≦)"+"\n"
+        ]
+        leftPaw = [
+            "       "+chr(11004)+"\n",
+            "       "+chr(11004)+"  "+"\n",
+            "       "+chr(11004)+"   "+"\n",
+            "      "+chr(5709)+"   "+"\n"
+        ]
+        print("".join(ropeNoKnot)+"".join(veryWorriedHead)+"".join(torsoBothArm)+"".join(leftPaw))
+    else:
+        deadHead = [
+            "      ₩₩₩₩₦ "+"\n",
+            "      (X_X)"+"\n"
+        ]
+        bothPaw = [
+            "       "+chr(11004)+" "+chr(11004)+"\n",
+            "       "+chr(11004)+" "+chr(11004)+"\n",
+            "       "+chr(11004)+" "+chr(11004)+"\n",
+            "      "+chr(5709)+"   "+chr(5708)+"\n"
+        ]
+        print("".join(ropeNoKnot)+"".join(deadHead)+"".join(torsoBothArm)+"".join(bothPaw))
+
+
+
+
 def run():
     #se limpia la pantalla dependiendo del sistema operativo
     clearCmd = osClear()
@@ -54,25 +152,32 @@ def run():
     wordList = [i for i in wordList if i != "\n"]
     #se crea la guesslist con guiones bajos puesto que es la palabra a adivinar aún vacía
     guessList = [" _ " for i in wordList]
+    #se crea variable para llevar puntaje
+    score = 6
 
 
     drawing(wordList)
+    drawHangman(score)
     #print(word)
     #userTry = input("    ingresa una letra: ")
-    while guessList !=wordList:
+    while guessList !=wordList and score > 0:
         userTry = input("    ingresa una letra: ").lower()
         if userTry in wordList:
             # verifyNReturn(wordList,userTry)
             guessList = verifyNReturn(wordList, userTry, guessList)
         else:
-            continue
+            score -= 1
         drawing(wordList,guessList)
-        
-
-    print("""
-       fELICIDADES!!!
-       GANASTE
-       LA PALABRA ERA: """, word.upper())
+        drawHangman(score)
+    if score > 0 :
+        print("""
+            fELICIDADES!!!
+            GANASTE
+            LA PALABRA ERA: """, word.upper())
+    else:
+        print("""
+            LOOSER
+            LA PALABRA ERA: """, word.upper())
 
 
 
