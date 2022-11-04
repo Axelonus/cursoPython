@@ -1,7 +1,7 @@
 def divisors(num):
     try:
         if num <=0:
-            raise ValueError("Solo se pueden introducir números mayores a 0")
+            raise ValueError("Solo se pueden introducir números mayores a 0"
         else:
             divs=[]
             for i in range(1,num+1):
